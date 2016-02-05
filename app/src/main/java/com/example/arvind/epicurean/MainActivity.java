@@ -9,13 +9,14 @@ package com.example.arvind.epicurean;
         import android.widget.TextView;
         import android.widget.Button;
         import android.support.v4.app.FragmentTransaction;
-        import android.support.v4.app.FragmentManager;
-        import android.support.v4.app.Fragment;
-        import android.support.v7.app.ActionBarActivity;
 
-
+        import com.firebase.client.DataSnapshot;
+        import com.firebase.client.Firebase;
+        import com.firebase.client.FirebaseError;
+        import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends FragmentActivity {
+
     // two instances false: fragment hidden, true: fragment shown
     public boolean isOn = false;
 
@@ -23,8 +24,20 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Firebase.setAndroidContext(this);
+        Firebase myFirebaseRef = new Firebase("https://incandescent-fire-2150.firebaseio.com/");
+        myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
+        myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
 
-        // Create a button to click once recipe is needed (in progress)
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
+            }
+
+            @Override public void onCancelled(FirebaseError error) { }
+
+        });
+        // Create a button to click once recipe is needed
         Button button = (Button) findViewById(R.id.but);
         TextView recipe = (TextView) findViewById(R.id.recipeBox);
         // new fragment pr
@@ -53,6 +66,7 @@ public class MainActivity extends FragmentActivity {
         });
 
     }
+
         @Override
         public boolean onCreateOptionsMenu (Menu menu){
             // Inflate the menu; this adds items to the action bar if it is present.

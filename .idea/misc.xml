@@ -8,7 +8,6 @@
       <profile-state>
         <expanded-state>
           <State>
-            <id />
           </State>
         </expanded-state>
         <selected-state>
@@ -18,7 +17,6 @@
         </selected-state>
       </profile-state>
     </entry>
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
