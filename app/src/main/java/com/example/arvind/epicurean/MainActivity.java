@@ -1,70 +1,74 @@
 package com.example.arvind.epicurean;
 
-        import android.graphics.Typeface;
-        import android.support.v4.app.FragmentActivity;
+        import android.app.Fragment;
         import android.os.Bundle;
+        import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.FragmentTransaction;
+        import android.support.v4.view.ViewPager;
+        import android.support.v7.app.ActionBar;
         import android.view.Menu;
         import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.TextView;
-        import android.widget.Button;
-        import android.support.v4.app.FragmentTransaction;
-
+        import android.support.v7.app.ActionBarActivity;
         import com.firebase.client.DataSnapshot;
         import com.firebase.client.Firebase;
         import com.firebase.client.FirebaseError;
         import com.firebase.client.ValueEventListener;
 
-public class MainActivity extends FragmentActivity {
-
-    // two instances false: fragment hidden, true: fragment shown
-    public boolean isOn = false;
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FragmentManager manager = getSupportFragmentManager();
+
+        Epicurean_PagerAdapter f =
+                new Epicurean_PagerAdapter(
+                        getSupportFragmentManager());
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(f);
+        final ActionBar actionBar = getSupportActionBar();
+        // Specify that tabs should be displayed in the action bar.
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Create a tab listener that is called when the user changes tabs.
+        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // show the given tab
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // hide the given tab
+            }
+
+            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // probably ignore this event
+            }
+        };
+
+        //creation of three tabs in the action bar and icons
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setText("Home")
+                        .setTabListener(tabListener));
+        actionBar.addTab(
+                actionBar.newTab()
+                        .setText("Add Recipe")
+                        .setTabListener(tabListener));
+
+
+        // Update current tab when page is changed (or swiped)
+        viewPager.setOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+
+                        actionBar.setSelectedNavigationItem(position);
+                    }
+                });
+
         Firebase.setAndroidContext(this);
-        Firebase myFirebaseRef = new Firebase("https://incandescent-fire-2150.firebaseio.com/");
-        myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
-        myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
-            }
-
-            @Override public void onCancelled(FirebaseError error) { }
-
-        });
-        // Create a button to click once recipe is needed
-        Button button = (Button) findViewById(R.id.but);
-        TextView recipe = (TextView) findViewById(R.id.recipeBox);
-        // new fragment pr
-        final PopUpRecipe pr = new PopUpRecipe();
-        // Begin the transaction
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        ft.replace(R.id.fragment_placeholder, pr, "POPUP");
-        ft.hide(pr);
-        ft.commit();
-      button.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                FragmentTransaction f = getSupportFragmentManager().beginTransaction();
-                // two instances false: fragment hidden, true: fragment shown
-                if (!isOn) {
-                    f.show(pr);
-                    isOn = true;
-                } else {
-                    f.hide(pr);
-                    isOn = false;
-                }
-                f.commit();
-                return true;
-            }
-        });
-
     }
 
         @Override
