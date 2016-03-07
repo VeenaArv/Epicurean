@@ -29,7 +29,7 @@ public class LatestRecipe extends Fragment {
                 container, false);
 
         // Create a button to click once recipe is needed
-        Button button = (Button) view.findViewById(R.id.but);
+    /*    Button button = (Button) view.findViewById(R.id.but);
         TextView recipe = (TextView) view.findViewById(R.id.recipeBox);
         // new fragment pr
        final Fragment pr = new PopUpRecipe();
@@ -54,7 +54,7 @@ public class LatestRecipe extends Fragment {
                 f.commit();
                 return true;
             }
-        });
+        });*/
         return view;
     }
 }

@@ -12,6 +12,7 @@ public class PopUpRecipe extends Fragment {
     public PopUpRecipe() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

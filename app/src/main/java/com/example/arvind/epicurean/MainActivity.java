@@ -2,6 +2,7 @@ package com.example.arvind.epicurean;
 
         import android.app.Fragment;
         import android.os.Bundle;
+        import android.support.v4.app.FragmentActivity;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentTransaction;
         import android.support.v4.view.ViewPager;
@@ -9,12 +10,14 @@ package com.example.arvind.epicurean;
         import android.view.Menu;
         import android.view.MenuItem;
         import android.support.v7.app.ActionBarActivity;
+
+        import com.astuetz.PagerSlidingTabStrip;
         import com.firebase.client.DataSnapshot;
         import com.firebase.client.Firebase;
         import com.firebase.client.FirebaseError;
         import com.firebase.client.ValueEventListener;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +25,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         FragmentManager manager = getSupportFragmentManager();
 
-        Epicurean_PagerAdapter f =
-                new Epicurean_PagerAdapter(
-                        getSupportFragmentManager());
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        Epicurean_PagerAdapter f = new Epicurean_PagerAdapter(getSupportFragmentManager());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(f);
-        final ActionBar actionBar = getSupportActionBar();
+        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabsStrip.setViewPager(viewPager);
+      /*  final ActionBar actionBar = getSupportActionBar();
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -66,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
 
                         actionBar.setSelectedNavigationItem(position);
                     }
-                });
+                });*/
 
         Firebase.setAndroidContext(this);
     }
